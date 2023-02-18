@@ -7,68 +7,29 @@ resource "google_bigquery_table" "landing_trips" {
   table_id            = "landing_trips"
   dataset_id          = google_bigquery_dataset.jobsity_trips.dataset_id
 
-  schema = <<EOF
-[
-    {
-        "name": "region",
-        "mode": "NULLABLE",
-        "type": "STRING",
-        "fields": []
-    },
-    {
-        "name": "datetime",
-        "mode": "NULLABLE",
-        "type": "TIMESTAMP",
-        "fields": []
-    },
-    {
-        "name": "datasource",
-        "mode": "NULLABLE",
-        "type": "STRING",
-        "fields": []
-    },
-    {
-        "name": "origin_coord",
-        "mode": "NULLABLE",
-        "type": "STRING",
-        "fields": []
-    },
-    {
-        "name": "destination_coord",
-        "mode": "NULLABLE",
-        "type": "STRING",
-        "fields": []
-    },
-    {
-        "name": "subscription_name",
-        "mode": "NULLABLE",
-        "type": "STRING",
-        "fields": []
-    },
-    {
-        "name": "message_id",
-        "mode": "NULLABLE",
-        "type": "STRING",
-        "fields": []
-    },
-    {
-        "name": "publish_time",
-        "mode": "NULLABLE",
-        "type": "TIMESTAMP",
-        "fields": []
-    },
-    {
-        "name": "data",
-        "mode": "NULLABLE",
-        "type": "JSON",
-        "fields": []
-    },
-    {
-        "name": "attributes",
-        "mode": "NULLABLE",
-        "type": "JSON",
-        "fields": []
-    }
-]
+  labels              = {}
+
+  schema = "${file("schema.json")}"
+}
+
+resource "google_bigquery_table" "refined_trips" {
+  deletion_protection = false
+  table_id = "refined_trips"
+  dataset_id = google_bigquery_dataset.jobsity_trips.dataset_id
+
+  materialized_view {
+    query = <<EOF
+SELECT
+  region,
+  ST_GEOGFROMTEXT(origin_coord) origin_coord,
+  ST_GEOGFROMTEXT(destination_coord) destination_coord,
+  datetime,
+  datasource
+FROM ${google_bigquery_table.landing_trips.dataset_id}.${google_bigquery_table.landing_trips.table_id}
 EOF
+  }
+
+  depends_on = [
+    google_bigquery_table.landing_trips
+  ]
 }

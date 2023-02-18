@@ -2,7 +2,7 @@ terraform {
   required_version = ">=0.14"
 
   backend "gcs" {
-    bucket = "tf-backend-17022023"
+    bucket = "trip-analysis-18022023-backend"
     prefix = "terraform/"
   }
 

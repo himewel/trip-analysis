@@ -47,9 +47,12 @@ resource "google_pubsub_subscription" "subscription" {
 
   bigquery_config {
     table = "${google_bigquery_table.landing_trips.project}:${google_bigquery_table.landing_trips.dataset_id}.${google_bigquery_table.landing_trips.table_id}"
+    use_topic_schema = true
+    write_metadata = true
   }
 
   dead_letter_policy {
+    max_delivery_attempts = 5
     dead_letter_topic = google_pubsub_topic.deadletter.id
   }
 

@@ -1,5 +1,5 @@
 variable "project" {
-  default = "jobsity-17022023"
+  default = "trip-analysis-18022023"
 }
 
 variable "region" {
