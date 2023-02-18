@@ -20,6 +20,10 @@ init:
 push:
 	python3 scripts/push_data.py
 
+.PHONY: query
+query:
+	python3 scripts/query.py
+
 .PHONY: update
 update:
 	cd functions/new_trip \

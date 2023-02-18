@@ -16,7 +16,7 @@ def test_region(token):
         "type": "region",
         "region": "Prague",
     }
-    print("requesting region query...")
+    print("\nrequesting region query...")
     res = requests.post(
         _URL, 
         json=params, 
@@ -33,7 +33,7 @@ def test_bounding_box(token):
         "lower_left": "90 90",
         "lower_right": "90 0",
     }
-    print("requesting bounding box query...")
+    print("\nrequesting bounding box query...")
     res = requests.post(
         _URL, 
         json=params, 
