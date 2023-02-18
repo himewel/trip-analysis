@@ -15,7 +15,7 @@ def get_bounding_box_average(request_json):
         SELECT 
             EXTRACT(YEAR FROM datetime) as date_year, 
             EXTRACT(WEEK FROM datetime) as date_week, 
-            COUNT(1) count
+            COUNT(1) as count
         FROM `{}.{}.{}`
         WHERE ST_COVERS(
             ST_GEOGFROMTEXT('POLYGON(({}, {}, {}, {}, {}))'), 
