@@ -18,7 +18,7 @@ def make_request(message, token):
         json=message, 
         headers={"Authorization": f"Bearer {token}"}
     )
-    print(res.json())
+    print(res, str(res.content))
 
 df = pd.read_csv("./scripts/trips.csv")
 for record in df.to_dict("records"):
